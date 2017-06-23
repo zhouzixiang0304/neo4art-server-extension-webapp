@@ -17,12 +17,18 @@
 package it.inserpio.neo4art.service.impl;
 
 import it.inserpio.neo4art.domain.Museum;
+import it.inserpio.neo4art.model.User;
+import it.inserpio.neo4art.repository.UserRepository;
 import it.inserpio.neo4art.service.MuseumService;
 import it.inserpio.neo4art.util.Neo4jRestClientFactory;
 
+import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.neo4j.conversion.EndResult;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.client.RestTemplate;
@@ -39,6 +45,8 @@ public class MuseumRestClientService implements MuseumService
   
   @Value("${neo4art_extension}")
   private String neo4artExtension;
+
+
   
   /* (non-Javadoc)
    * @see it.inserpio.neo4art.service.MuseumService#getMuseumsWithinDistance(double, double, double)
@@ -56,4 +64,29 @@ public class MuseumRestClientService implements MuseumService
     
     return response;
   }
+
+
+  @Autowired
+  UserRepository userRepository;
+
+  @Override
+  public List<User> getAllUsers() {
+      EndResult<User> all = userRepository.findAll();
+      Iterator<User> iterator = all.iterator();
+      List<User> list = new ArrayList<>();
+      while (iterator.hasNext()){
+          list.add(iterator.next());
+      }
+      return list;
+  }
+
+    @Override
+    public void saveUser(User user) {
+        userRepository.save(user);
+    }
+
+    @Override
+    public void deleteUser(Long id) {
+        userRepository.delete(id);
+    }
 }

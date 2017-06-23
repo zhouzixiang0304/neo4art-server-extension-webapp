@@ -17,6 +17,7 @@
 package it.inserpio.neo4art.service;
 
 import it.inserpio.neo4art.domain.Museum;
+import it.inserpio.neo4art.model.User;
 
 import java.util.List;
 
@@ -34,4 +35,10 @@ public interface MuseumService
    * @return
    */
   List<Museum> getMuseumsWithinDistance(double longitude, double latitude, double distanceInKm);
+
+  List<User> getAllUsers();
+
+  void saveUser(User user);
+
+  void deleteUser(Long id);
 }
