@@ -36,9 +36,5 @@ public interface MuseumService
    */
   List<Museum> getMuseumsWithinDistance(double longitude, double latitude, double distanceInKm);
 
-  List<User> getAllUsers();
 
-  void saveUser(User user);
-
-  void deleteUser(Long id);
 }

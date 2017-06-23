@@ -1,8 +1,7 @@
 package it.inserpio.neo4art.model;
 
-import org.springframework.data.neo4j.annotation.Indexed;
-import org.springframework.data.neo4j.annotation.NodeEntity;
-import org.springframework.data.neo4j.annotation.RelatedToVia;
+import org.neo4j.graphdb.Direction;
+import org.springframework.data.neo4j.annotation.*;
 import org.springframework.data.neo4j.support.index.IndexType;
 
 import java.util.HashSet;
@@ -16,6 +15,10 @@ public class User extends IdentifiableEntity {
 
     @Indexed(indexType = IndexType.FULLTEXT, indexName = "userName")
     private String userName;
+
+    @Fetch
+    @RelatedTo(type = "KNOWS", direction = Direction.OUTGOING)
+    private Set<User> friends = new HashSet<>();
 
     public User() {/* NOOP */}
 
@@ -40,6 +43,18 @@ public class User extends IdentifiableEntity {
 
     public void setUserName(String userName) {
         this.userName = userName;
+    }
+
+    public Set<User> getFriends() {
+        return friends;
+    }
+
+    public void setFriends(Set<User> friends) {
+        this.friends = friends;
+    }
+
+    public void knowsSomeone(User user){
+        friends.add(user);
     }
 
     @Override

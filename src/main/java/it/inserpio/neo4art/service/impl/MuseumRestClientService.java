@@ -66,27 +66,4 @@ public class MuseumRestClientService implements MuseumService
   }
 
 
-  @Autowired
-  UserRepository userRepository;
-
-  @Override
-  public List<User> getAllUsers() {
-      EndResult<User> all = userRepository.findAll();
-      Iterator<User> iterator = all.iterator();
-      List<User> list = new ArrayList<>();
-      while (iterator.hasNext()){
-          list.add(iterator.next());
-      }
-      return list;
-  }
-
-    @Override
-    public void saveUser(User user) {
-        userRepository.save(user);
-    }
-
-    @Override
-    public void deleteUser(Long id) {
-        userRepository.delete(id);
-    }
 }

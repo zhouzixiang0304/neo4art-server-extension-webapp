@@ -18,22 +18,24 @@ import org.springframework.transaction.annotation.Transactional;
 @ContextConfiguration(locations = { "/META-INF/spring/application-context.xml" })
 @Transactional
 @EnableTransactionManagement
-public class MyMuseumServieTest {
+public class UserServieTest {
     @Autowired
-    private MuseumService museumService;
+    private UserService userService;
 
     @Test
     public void testGetAllUsers(){
-        museumService.getAllUsers();
+        userService.getAllUsers();
     }
 
     @Test
     public void testAddUser(){
-        museumService.saveUser(new User("1","234"));
+        userService.saveUser(new User("1","234"));
     }
 
     @Test
     public void testDeleteUser(){
-        museumService.deleteUser(16802L);
+        userService.deleteUser(16802L);
     }
+
+
 }
