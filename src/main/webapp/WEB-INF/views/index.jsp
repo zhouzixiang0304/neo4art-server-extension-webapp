@@ -21,7 +21,7 @@
                     <li>
                         <form role="search" class="navbar-form" id="search">
                             <div class="form-group">
-                                <input type="text" value="The Finals" placeholder="Search for Movie Title" class="form-control" name="search">
+                                <input type="text" value="" placeholder="Search Friends" class="form-control" name="search">
                             </div>
                             <button class="btn btn-default" type="submit">Search</button>
                         </form>
@@ -83,7 +83,7 @@
 </style>
 
 <script type="text/javascript" src="/resources/js/jquery-1.10.2.js"></script>
-<script src="http://d3js.org/d3.v3.min.js" charset="utf-8"></script>
+<script src="/resources/js/d3.js" charset="utf-8"></script>
 <script type="text/javascript">
     $(function () {
         function showMovie(title) {
@@ -106,7 +106,7 @@
         }
         function search() {
             var query=$("#search").find("input[name=search]").val();
-            $.get("/person/findByTitleLike?title=" + encodeURIComponent(query),
+            $.get(/*"/user/searchFriendsByTitle?userName="*/ + encodeURIComponent(query),
                     function (data) {
                         var t = $("table#results tbody").empty();
                         if (!data) return;

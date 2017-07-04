@@ -47,4 +47,13 @@ public class UserController {
     public Map<String,Object> graph(@RequestParam(value = "limit",required = false) Integer limit){
         return userService.graph(limit == null ? 6 : limit);
     }
+
+    /**
+     * 根据姓名查找相关朋友
+     */
+    @ResponseBody
+    @RequestMapping(value = "/searchFriendsByTitle",method = RequestMethod.GET)
+    public Map<String, Object> searchFriendsByTitle(String userName){
+        return userService.searchFriends(userName);
+    }
 }

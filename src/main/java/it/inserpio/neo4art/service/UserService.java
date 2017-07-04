@@ -2,8 +2,10 @@ package it.inserpio.neo4art.service;
 
 import it.inserpio.neo4art.model.User;
 
+import java.util.Collection;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 /**
  * Created by lsy on 2017/6/23.
@@ -43,4 +45,20 @@ public interface UserService {
      * @return
      */
     Map<String,Object> graph(int limit);
+
+    /**
+     * 查找某人的所有朋友
+     * @param name
+     * @return
+     */
+    Map<String,Object> searchFriends(String name);
+
+    /**
+     * 根据用户名查找用户
+     * @param name
+     * @return
+     */
+    User searchByName(String name);
+
+    Set<User> getFriendOfFriend(String name);
 }
