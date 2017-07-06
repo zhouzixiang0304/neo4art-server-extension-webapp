@@ -1,6 +1,7 @@
 package it.inserpio.neo4art.service;
 
 import it.inserpio.neo4art.model.Book;
+import it.inserpio.neo4art.model.IdentifiableEntity;
 import it.inserpio.neo4art.model.User;
 import it.inserpio.neo4art.util.ToD3Format;
 import org.junit.Test;
