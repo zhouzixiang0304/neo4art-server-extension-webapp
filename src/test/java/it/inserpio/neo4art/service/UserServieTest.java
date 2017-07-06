@@ -1,6 +1,8 @@
 package it.inserpio.neo4art.service;
 
+import it.inserpio.neo4art.model.Book;
 import it.inserpio.neo4art.model.User;
+import it.inserpio.neo4art.util.ToD3Format;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,11 +31,14 @@ import static org.junit.Assert.assertTrue;
 public class UserServieTest {
     @Autowired
     private UserService userService;
+    ToD3Format<User> toD3Format = ToD3Format.getInstance();
 
     @Test
-    public void testGetAllUsers(){
-        List<User> list = userService.getAllUsers();
-        assertEquals(6,list.size());
+    public void testGetAllUsers() throws IllegalAccessException{
+        List list = userService.getAllUsers();
+        list.add(new Book("ef","Effective Java"));
+//        assertEquals(6,list.size());
+        toD3Format.toD3FormatAgain(list);
     }
 
     @Test

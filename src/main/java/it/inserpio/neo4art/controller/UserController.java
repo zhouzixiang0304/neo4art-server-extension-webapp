@@ -1,14 +1,13 @@
 package it.inserpio.neo4art.controller;
 
+import it.inserpio.neo4art.model.User;
 import it.inserpio.neo4art.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.Map;
+import java.util.Set;
 
 /**
  * Created by lsy on 2017/6/23.
@@ -43,7 +42,7 @@ public class UserController {
     }
 
     @ResponseBody
-    @RequestMapping(value = "/graph",method = RequestMethod.GET)
+    @RequestMapping(value = "/graph",method = RequestMethod.GET,produces="application/json")
     public Map<String,Object> graph(@RequestParam(value = "limit",required = false) Integer limit){
         return userService.graph(limit == null ? 6 : limit);
     }
@@ -55,5 +54,11 @@ public class UserController {
     @RequestMapping(value = "/searchFriendsByTitle",method = RequestMethod.GET)
     public Map<String, Object> searchFriendsByTitle(String userName){
         return userService.searchFriends(userName);
+    }
+
+    @ResponseBody
+    @RequestMapping(value = "/getFriendOfFriend/{name}",method = RequestMethod.GET,produces = "application/json")
+    public Set<User> getFriendOfFriend(@PathVariable("name") String name){
+        return userService.getFriendOfFriend(name);
     }
 }

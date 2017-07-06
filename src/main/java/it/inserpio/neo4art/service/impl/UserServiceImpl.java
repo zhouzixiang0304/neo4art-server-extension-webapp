@@ -77,7 +77,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public Map<String,Object> graph(int limit) {
-        return toD3Format.toD3Format(toD3Format.toCollection(userRepository.findAll()));
+        return toD3Format.toD3FormatAgain(toD3Format.toCollection(userRepository.findAll()));
     }
 
     //Match (fI:User)-[:KNOWS]->(u:User)-[:KNOWS]->(fO:User) where u.userName="Sara" return fI,u,fO
