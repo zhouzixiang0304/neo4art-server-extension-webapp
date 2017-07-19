@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="it.inserpio.neo4art.mybatis.dao.SerConMapper">
+    <resultMap id="SerConResultMap" type="it.inserpio.neo4art.mybatis.entity.ServerConnection">
+        <result column="source_class" jdbcType="VARCHAR" property="sourceClass" />
+        <result column="source_func" jdbcType="VARCHAR" property="sourceFunc" />
+        <result column="target_class" jdbcType="VARCHAR" property="targetClass" />
+        <result column="target_func" jdbcType="VARCHAR" property="targetFunc" />
+        <result column="description" jdbcType="VARCHAR" property="description" />
+    </resultMap>
+    <sql id="SerCon_Column_List">
+        source_class, source_func, target_class, target_func, description
+    </sql>
+
+    <select id="findAll" resultMap="SerConResultMap">
+        SELECT * FROM server.serverconnection;
+    </select>
+    <select id="findByColumn" resultMap="SerConResultMap" parameterType="ServerConnection">
+        SELECT * FROM server.serverconnection
+        <trim prefix="WHERE" prefixOverrides="AND|OR">
+            <if test="sourceClass != null"> AND source_class=#{sourceClass}</if>
+            <if test="sourceFunc != null"> AND source_func=#{sourceFunc}</if>
+            <if test="targetClass != null"> AND target_class=#{targetClass}</if>
+            <if test="targetFunc != null"> AND target_func=#{targetFunc}</if>
+            <if test="description != null"> AND description=#{description}</if>
+        </trim>
+    </select>
+
+</mapper>

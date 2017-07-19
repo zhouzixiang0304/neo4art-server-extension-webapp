@@ -5,6 +5,7 @@ package it.inserpio.neo4art.util;
 import it.inserpio.neo4art.model.User;
 import org.apache.commons.collections.map.HashedMap;
 import org.omg.CORBA.UserException;
+import org.springframework.data.neo4j.annotation.RelatedTo;
 import org.springframework.data.neo4j.conversion.EndResult;
 
 import java.lang.reflect.Field;
@@ -53,7 +54,7 @@ public class ToD3Format<T> {
                 Field[] fields = clazz.getDeclaredFields();
                 Map<String, Object> map = new HashMap<>();
                 for (Field f : fields) {
-                    if (!Collection.class.isAssignableFrom(f.getType())) {
+                    if (!f.isAnnotationPresent(RelatedTo.class)) {
                         f.setAccessible(true);
                         f.get(c);
                         map.put(f.getName(), f.get(c));
@@ -71,7 +72,7 @@ public class ToD3Format<T> {
                 Field[] fields = clazz.getDeclaredFields();
                 Map<String, Object> map = new HashMap<>();
                 for (Field f : fields) {
-                    if (Collection.class.isAssignableFrom(f.getType())) {
+                    if (f.isAnnotationPresent(RelatedTo.class)) {
                         //得到其中的collection
                         f.setAccessible(true);
                         Collection<T> innerCollection = (Collection<T>) f.get(c);

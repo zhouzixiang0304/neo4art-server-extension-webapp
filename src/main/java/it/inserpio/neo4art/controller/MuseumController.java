@@ -46,7 +46,7 @@ public class MuseumController
   /**
    * Find museums hosting selected artist's artworks
    * 
-   * @param artistId
+   * @param
    * @return
    */
   @Transactional

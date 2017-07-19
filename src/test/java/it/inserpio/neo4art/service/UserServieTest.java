@@ -13,10 +13,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Collection;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
@@ -32,14 +29,22 @@ import static org.junit.Assert.assertTrue;
 public class UserServieTest {
     @Autowired
     private UserService userService;
-    ToD3Format<User> toD3Format = ToD3Format.getInstance();
+    ToD3Format<? extends IdentifiableEntity> toD3Format = ToD3Format.getInstance();
 
     @Test
     public void testGetAllUsers() throws IllegalAccessException{
-        List list = userService.getAllUsers();
-        list.add(new Book("ef","Effective Java"));
+        User lsy = new User("lsy", "lsy233");
+//        List<? super IdentifiableEntity> list = userService.getAllUsers();
+        List<? super IdentifiableEntity> list = new ArrayList<>();
+        Book ef = new Book("ef", "Effective Java");
+        list.add(ef);
 //        assertEquals(6,list.size());
-        toD3Format.toD3FormatAgain(list);
+//        toD3Format.toD3FormatAgain(list);
+        list.add(lsy);
+        Iterator<? super IdentifiableEntity> iterator = list.iterator();
+        while(iterator.hasNext()){
+            System.out.println(iterator.next());
+        }
     }
 
     @Test

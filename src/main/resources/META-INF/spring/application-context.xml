@@ -19,5 +19,6 @@
 	</context:component-scan>
 
     <import resource="classpath:META-INF/spring/neo4j-database-context.xml"/>
+	<import resource="spring-mybatis.xml"/>
 	
 </beans>
