@@ -22,41 +22,32 @@ public class ServerServiceTest {
     private ServerService serverService;
 
     @Test
-    public void testFindAll(){
+    public void findAllConnectionTest(){
         serverService.findAllConnection();
     }
 
     @Test
-    public void prepareNeo(){
+    public void prepareNeoTest(){
         serverService.prepareNeo();
     }
 
     @Test
-    public void saveNodesAndRelations(){
+    public void saveNodesAndRelationsTest(){
         serverService.saveNodesAndRelations();
     }
 
     @Test
-    public void findAllServerFunc(){
+    public void getAllServerTest(){
         List<Server> allServerFunc = serverService.getAllServer();
     }
 
     @Test
-    public void deleteAll(){
+    public void deleteAllServerTest(){
         serverService.deleteAllServer();
     }
 
     @Test
-    public void testServerFuncUnique(){
-        ServerFunc s1 = new ServerFunc("test1","test1");
-        ServerFunc s2 = new ServerFunc("test1","test1");
-        Set<ServerFunc> set = new HashSet<>();
-        set.add(new ServerFunc("test2","test3"));
-        s2.setTargets(set);
-        Set<ServerFunc> nodeSet = new HashSet<>();
-        nodeSet.add(s1);
-        nodeSet.add(s2);
-        System.out.println(nodeSet.size());
+    public void graph(){
 
     }
 }

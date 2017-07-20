@@ -21,28 +21,33 @@ public class ServerFuncServiceTest {
     private ServerFuncService serverFuncService;
 
     @Test
-    public void testFindAll(){
+    public void findAllConnectionTest(){
         serverFuncService.findAllConnection();
     }
 
     @Test
-    public void prepareNeo(){
+    public void prepareNeoTest(){
         serverFuncService.prepareNeo();
     }
 
     @Test
-    public void saveNodesAndRelations(){
+    public void saveNodesAndRelationsTest(){
         serverFuncService.saveNodesAndRelations();
     }
 
     @Test
-    public void findAllServerFunc(){
+    public void getAllServerFuncTest(){
         List<ServerFunc> allServerFunc = serverFuncService.getAllServerFunc();
     }
 
     @Test
-    public void deleteAll(){
+    public void deleteAllServerTest(){
         serverFuncService.deleteAllServer();
+    }
+
+    @Test
+    public void graphTest(){
+
     }
 
     @Test

@@ -19,7 +19,7 @@ public class SerConMapperTest {
     private SerConMapper serConMapper;
 
     @Test
-    public void testConnection(){
+    public void findAllTest(){
         List<ServerConnection> list = serConMapper.findAll();
         for (ServerConnection serverConn :
                 list) {
@@ -27,7 +27,7 @@ public class SerConMapperTest {
         }
     }
     @Test
-    public void testFindByCondition(){
+    public void findByColumnTest(){
         List<ServerConnection> list = serConMapper.findByColumn(new ServerConnection("class1"));
         for (ServerConnection serverConn :
                 list) {

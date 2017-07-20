@@ -52,7 +52,7 @@
 		</mvc:message-converters>
 	</mvc:annotation-driven>
 	
-	<mvc:resources mapping="/images/**" location="/images/" />
+	<mvc:resources mapping="/images/**" location="/resources/images/" />
 	<mvc:resources mapping="/resources/**" location="/resources/" />
 	
 	<context:component-scan base-package="it.inserpio.neo4art.controller" />

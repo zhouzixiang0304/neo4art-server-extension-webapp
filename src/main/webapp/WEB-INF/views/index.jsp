@@ -3,7 +3,7 @@
 <head>
     <meta name="viewport" content="width=device-width, initial-scale=1.0" >
     <link rel="stylesheet" href="http://neo4j-contrib.github.io/developer-resources/language-guides/assets/css/main.css">
-    <title>Neo4j Movies</title>
+    <title>Neo4j Servers</title>
 
     <style>
         nodetext{
@@ -32,7 +32,7 @@
                     <li>
                         <form role="search" class="navbar-form" id="search">
                             <div class="form-group">
-                                <input type="text" value="" placeholder="Search Friends" class="form-control" name="search">
+                                <input type="text" value="" placeholder="Search Server" class="form-control" name="search">
                             </div>
                             <button class="btn btn-default" type="submit">Search</button>
                         </form>
@@ -46,7 +46,7 @@
                     </a>
                 </div>
                 <div class="navbar-brand">
-                    <div class="brand">Neo4j Movies</div>
+                    <div class="brand">Neo4j Servers</div>
                 </div>
             </div>
         </div>
@@ -117,7 +117,7 @@
         }
         function search() {
             var query=$("#search").find("input[name=search]").val();
-            $.get(/*"/user/searchFriendsByTitle?userName="*/ + encodeURIComponent(query),
+            $.get(/*"/user/searchServerByTitle?userName="*/ + encodeURIComponent(query),
                 function (data) {
                     var t = $("table#results tbody").empty();
                     if (!data) return;

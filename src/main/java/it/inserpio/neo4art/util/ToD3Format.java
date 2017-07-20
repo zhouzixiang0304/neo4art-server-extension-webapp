@@ -14,6 +14,7 @@ import java.util.*;
 
 /**
  * Created by lsy on 2017/6/14.
+ * 工具类，使用单例模式
  */
 public class ToD3Format<T> {
     private final static ToD3Format toD3Format = new ToD3Format();
@@ -23,6 +24,11 @@ public class ToD3Format<T> {
         return toD3Format;
     }
 
+    /**
+     * 只针对于User类的格式转换
+     * @param persons
+     * @return
+     */
     public Map<String,Object> toD3Format(Collection<User> persons){
         List<Map<String,Object>> nodes = new ArrayList<>();
         List<Map<String,Object>> rels = new ArrayList<>();
@@ -44,6 +50,11 @@ public class ToD3Format<T> {
         return map("nodes",nodes,"links",rels);
     }
 
+    /**
+     * 对toD3Format方法进行重构，使得其可以处理所有约定类型的集合
+     * @param collection
+     * @return
+     */
     public Map<String,Object> toD3FormatAgain(Collection<T> collection){
         List<Map<String,Object>> nodes = new ArrayList<>();
         List<Map<String,Object>> rels = new ArrayList<>();
@@ -91,6 +102,14 @@ public class ToD3Format<T> {
         return map("nodes",nodes,"links",rels);
     }
 
+    /**
+     * 新建一个Map，为了控制返回nodes和links的map格式
+     * @param key1
+     * @param value1
+     * @param key2
+     * @param value2
+     * @return
+     */
     public Map<String,Object> map(String key1, Object value1, String key2, Object value2){
         Map<String,Object> result = new HashMap<>(2);
         result.put(key1,value1);
@@ -98,6 +117,11 @@ public class ToD3Format<T> {
         return result;
     }
 
+    /**
+     * 将neo4j中查询的结果转换为集合类
+     * @param param
+     * @return
+     */
     public Set<T> toCollection(EndResult<T> param){
         Set<T> result = new HashSet<>();
         Iterator<T> iterator = param.iterator();

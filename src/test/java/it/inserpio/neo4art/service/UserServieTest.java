@@ -32,7 +32,7 @@ public class UserServieTest {
     ToD3Format<? extends IdentifiableEntity> toD3Format = ToD3Format.getInstance();
 
     @Test
-    public void testGetAllUsers() throws IllegalAccessException{
+    public void getAllUsersTest() throws IllegalAccessException{
         User lsy = new User("lsy", "lsy233");
 //        List<? super IdentifiableEntity> list = userService.getAllUsers();
         List<? super IdentifiableEntity> list = new ArrayList<>();
@@ -48,29 +48,44 @@ public class UserServieTest {
     }
 
     @Test
-    public void testAddUser(){
+    public void saveUserTest(){
         userService.saveUser(new User("1","234"));
     }
 
     @Test
-    public void testDeleteUser(){
+    public void deleteUserTest(){
         userService.deleteUser(16809L);
     }
 
     @Test
-    public void testSearchFriends(){
+    public void setUpUsersTest(){
+
+    }
+
+    @Test
+    public void purgeDatabaseTest(){
+
+    }
+
+    @Test
+    public void graphTest(){
+
+    }
+
+    @Test
+    public void searchFriendsTest(){
         Map<String, Object> map = userService.searchFriends("Sara");
         assertEquals(3,((List)map.get("nodes")).size());
     }
 
     @Test
-    public void testSearchByName(){
+    public void searchByNameTest(){
         User joe = userService.searchByName("Joe");
         assertEquals(16802,joe.getGraphId().longValue());
     }
 
     @Test
-    public void testFriendOfFriend(){
+    public void getFriendOfFriendTest(){
         Set<User> friendOfFriend = userService.getFriendOfFriend("Joe");
         assertEquals(3,friendOfFriend.size());
     }
