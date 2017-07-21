@@ -22,12 +22,6 @@ public interface ServerFuncService {
     List<ServerConnection> findAllConnection();
 
     /**
-     * 将查找到的服务连接构建为Node
-     * @return
-     */
-    Collection<ServerFunc> prepareNeo();
-
-    /**
      * 保存节点和关系
      */
     void saveNodesAndRelations();

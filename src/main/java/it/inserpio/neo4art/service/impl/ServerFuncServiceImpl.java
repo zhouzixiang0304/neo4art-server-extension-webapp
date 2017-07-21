@@ -28,8 +28,11 @@ public class ServerFuncServiceImpl implements ServerFuncService {
         return serConMapper.findAll();
     }
 
-    @Override
-    public Set<ServerFunc> prepareNeo() {
+    /**
+     * 将查找出来的所有连接，格式转换为
+     * @return
+     */
+    private Set<ServerFunc> prepareNeo() {
         //第一步：将查找到的服务连接构建为Node
         List<ServerConnection> connectionList = findAllConnection();
         Map<ServerFunc,Set<ServerFunc>> serverFuncMap = new HashMap<>();

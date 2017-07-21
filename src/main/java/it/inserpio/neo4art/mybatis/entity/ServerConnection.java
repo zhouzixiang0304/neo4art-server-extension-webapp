@@ -76,4 +76,12 @@ public class ServerConnection {
         this.targetClass = targetClass;
         this.targetFunc = targetFunc;
     }
+
+    public ServerConnection(String sourceClass, String sourceFunc, String targetClass, String targetFunc, String description) {
+        this.sourceClass = sourceClass;
+        this.sourceFunc = sourceFunc;
+        this.targetClass = targetClass;
+        this.targetFunc = targetFunc;
+        this.description = description;
+    }
 }

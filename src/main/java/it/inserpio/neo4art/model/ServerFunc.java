@@ -81,6 +81,6 @@ public class ServerFunc extends IdentifiableEntity {
 
     @Override
     public int hashCode() {
-        return  className.hashCode()+funcName.hashCode()*31;
+        return  (className == null || funcName == null ) ? super.hashCode() : className.hashCode()+funcName.hashCode()*31;
     }
 }
