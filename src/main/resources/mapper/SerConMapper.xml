@@ -25,5 +25,22 @@
             <if test="description != null"> AND description=#{description}</if>
         </trim>
     </select>
+    <insert id="saveServerConnection" parameterType="ServerConnection">
+        INSERT INTO server.serverconnection
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="sourceClass != null">source_class,</if>
+            <if test="sourceFunc != null">source_func,</if>
+            <if test="targetClass != null">target_class,</if>
+            <if test="targetFunc != null">target_func,</if>
+            <if test="description != null">description,</if>
+        </trim>
+        <trim prefix="VALUES (" suffix=")" suffixOverrides=",">
+            <if test="sourceClass != null">#{sourceClass},</if>
+            <if test="sourceFunc != null">#{sourceFunc},</if>
+            <if test="targetClass != null">#{targetClass},</if>
+            <if test="targetFunc != null">#{targetFunc},</if>
+            <if test="description != null">#{description},</if>
+        </trim>
+    </insert>
 
 </mapper>

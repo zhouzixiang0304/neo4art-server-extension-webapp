@@ -14,4 +14,6 @@ public interface SerConMapper {
     List<ServerConnection> findAll();
 
     List<ServerConnection> findByColumn(ServerConnection serverConnection);
+
+    int saveServerConnection(ServerConnection serverConnection);
 }

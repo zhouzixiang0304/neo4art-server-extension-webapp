@@ -7,12 +7,18 @@ import it.inserpio.neo4art.repository.ServerFuncRepository;
 import it.inserpio.neo4art.service.impl.ServerFuncServiceImpl;
 import org.easymock.EasyMock;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.TestExecutionListeners;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.test.context.support.DependencyInjectionTestExecutionListener;
+import org.springframework.test.context.transaction.TransactionConfiguration;
+import org.springframework.test.context.transaction.TransactionalTestExecutionListener;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
@@ -27,15 +33,23 @@ import static org.junit.Assert.assertEquals;
  * Created by lsy on 2017/7/11.
  */
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations = { "/META-INF/spring/application-context.xml" })
+//@TestExecutionListeners(listeners = {DependencyInjectionTestExecutionListener.class, TransactionalTestExecutionListener.class})
+//@TransactionConfiguration(transactionManager = "transactionManager",defaultRollback = true)
+//@Transactional
+@ContextConfiguration(locations = { "/META-INF/spring/application-context.xml",
+        "/META-INF/spring/neo4j-database-context.xml",
+        "/META-INF/spring/spring-mybatis.xml"})
 public class ServerFuncServiceTest {
     @Autowired
     private ServerFuncService serverFuncService;
+    @Autowired
+    private SerConMapper serConMapper;
     private ServerFuncRepository serverFuncRepositoryMock;
     private SerConMapper serConMapperMock;
 
-    @Before
+//    @Before
     public void setUp() throws Exception{
+        System.out.println("@Ignore");
         serverFuncRepositoryMock = EasyMock.createMock(ServerFuncRepository.class);
         serConMapperMock = EasyMock.createMock(SerConMapper.class);
         Class<ServerFuncServiceImpl> clazz = ServerFuncServiceImpl.class;
@@ -73,22 +87,13 @@ public class ServerFuncServiceTest {
     }
 
     @Test
-    @Rollback
+    @Transactional
+    @Rollback(true)
     public void saveNodesAndRelationsTest() throws Exception{
-//        List<ServerConnection> expectedList = createExpectedList();
-//        EasyMock.expect(serConMapperMock.findAll()).andReturn(expectedList);
-//        EasyMock.replay(serConMapperMock);
-//        Class<ServerFuncServiceImpl> clazz = ServerFuncServiceImpl.class;
-//        Method prepareNeo = clazz.getDeclaredMethod("prepareNeo");
-//        prepareNeo.setAccessible(true);
-//        Set<ServerFunc> set = (Set<ServerFunc>)prepareNeo.invoke(serverFuncService);
-//        for (ServerFunc s :
-//                set) {
-//            EasyMock.expect(serverFuncRepositoryMock.save(s)).andReturn(s);
-//        }
-//        EasyMock.replay(serverFuncRepositoryMock);
 //        serverFuncService.saveNodesAndRelations();
-//        EasyMock.verify(serverFuncRepositoryMock);
+        ServerConnection serverConnection = new ServerConnection("class9","func9","class10","func10","test10");
+        serverFuncService.saveServerConnection(serverConnection);
+        int i = 1/0;
     }
 
     @Test

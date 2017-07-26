@@ -13,10 +13,15 @@
         nodetext-shadow: 0 1px 0 #fff, 1px 0 0 #fff, 0 -1px 0 #fff, -1px 0 0 #fff;
     }
     </style>
-
+    <link rel="stylesheet" href="./css/tooltip.css"/>
 </head>
 
 <body>
+<script src="/resources/js/jquery.min.js" ></script>
+<script type="text/javascript" src="/resources/js/jquery-ui.min.js"></script>
+<script type="text/javascript" src="/resources/js/jquery-ui.css"></script>
+<script src="/resources/js/d3.js" charset="utf-8"></script>
+
 <div id="graph">
     <defs>
         <marker id="markerArrow" markerWidth="13" markerHeight="13" refx="2" refy="6" orient="auto">
@@ -30,11 +35,12 @@
             <div class="col-sm-6 col-md-6">
                 <ul class="nav navbar-nav">
                     <li>
-                        <form role="search" class="navbar-form" id="search">
+                        <form role="search" class="navbar-form">
                             <div class="form-group">
-                                <input type="text" value="" placeholder="Search Server" class="form-control" name="search">
+                                <input id ="search" placeholder="search by name"/>
+                                <button type="button" onclick="searchNode()">Find</button>
                             </div>
-                            <button class="btn btn-default" type="submit">Search</button>
+                            <%--<button class="btn btn-default" type="submit" onclick="search(this.form.search.value)">Search</button>--%>
                         </form>
                     </li>
                 </ul>
@@ -53,91 +59,11 @@
     </div>
 </div>
 
-<div class="row">
-    <div class="col-md-5">
-        <div class="panel panel-default">
-            <div class="panel-heading">Search Results</div>
-            <table id="results" class="table table-striped table-hover">
-                <thead>
-                <tr>
-                    <th>Society</th>
-                    <th>Released</th>
-                    <th>Tagline</th>
-                </tr>
-                </thead>
-                <tbody>
-                </tbody>
-            </table>
-        </div>
-    </div>
-    <div class="col-md-7">
-        <div class="panel panel-default">
-            <div class="panel-heading" id="title">Details</div>
-            <div class="row">
-                <div class="col-sm-4 col-md-4">
-                    <img src="" class="well" id="poster"/>
-                </div>
-                <div class="col-md-8 col-sm-8">
-                    <h4>Crew</h4>
-                    <ul id="crew">
-                    </ul>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
-<style type="text/css">
-    .node { stroke: #222; stroke-width: 1.5px; }
-    .node.actor { fill: #888; }
-    .node.person { fill: #BBB; }
-    .link { stroke: #999; stroke-opacity: .6; stroke-width: 1px; }
-</style>
-
-<script type="text/javascript" src="/resources/js/jquery-1.10.2.js"></script>
-<script src="/resources/js/d3.js" charset="utf-8"></script>
 <script type="text/javascript">
-    $(function () {
-        function showMovie(title) {
-            $.get("/person/findByTitle?title=" + encodeURIComponent(title), // todo fix paramter in SDN
-                function (data) {
-                    if (!data ) return; //  || !data["_embedded"].movies) return;
-                    var movie = data; // ["_embedded"].movies[0];
-                    $("#title").text(movie.title);
-                    $("#poster").attr("src","http://neo4j-contrib.github.io/developer-resources/language-guides/assets/posters/"+encodeURIComponent(movie.title)+".jpg");
-                    var $list = $("#crew").empty();
-                    movie.roles.forEach(function (cast) {
-                        $.get(cast._links.person.href, function(personData) {
-                            var person = personData.name;
-                            var job = cast.job || "acted";
-                            $list.append($("<li>" + person + " " +job + (job == "acted"?" as " + cast.roles.join(", ") : "") + "</li>"));
-                        });
-                    });
-                }, "json");
-            return false;
-        }
-        function search() {
-            var query=$("#search").find("input[name=search]").val();
-            $.get(/*"/user/searchServerByTitle?userName="*/ + encodeURIComponent(query),
-                function (data) {
-                    var t = $("table#results tbody").empty();
-                    if (!data) return;
-                    data = data["_embedded"].movies;
-                    data.forEach(function (movie) {
-                        $("<tr><td class='movie'>" + movie.title + "</td><td>" + movie.released + "</td><td>" + movie.tagline + "</td></tr>").appendTo(t)
-                            .click(function() { showMovie($(this).find("td.movie").text());})
-                    });
-                    showMovie(data[0].title);
-                }, "json");
-            return false;
-        }
-
-        $("#search").submit(search);
-        search();
-    })
-</script>
-
-<script type="text/javascript">
+    var optArray = []; //PLACE HOLDER FOR SEARCH NAMES
     var width = 800, height = 800;
+
+    var highlight_trans = 0.1;
     /*d3.layout.force 基于物理模拟的位置连接，force.charge 获取或设置节点电荷数（表示吸引或排斥），
      linkDistance 获取或设置节点间连接线的距离， size获取宽和高*/
     var force = d3.layout.force()
@@ -163,6 +89,13 @@
 
     d3.json("/server/graph", function(error, graph) {
         if (error) return;
+
+        //COLLECT ALL THE NODE NAMES FOR SEARCH AUTO-COMPLETE
+        for (var i = 0; i<graph.nodes.length;i++){
+            optArray.push(graph.nodes[i].id);
+        }
+        optArray = optArray.sort();
+
         /*force.node 获得或设置布局中的节点阵列组，links获得或设置布局中节点间得连接阵列组，start开启或恢复节点间得位置影响*/
         force.nodes(graph.nodes).links(graph.links).start();
 
@@ -297,6 +230,30 @@
             text.attr("transform",function(d) { return "translate(" + d.x + "," + (d.y+5) + ")"; });
         });
     });
+
+    // ASSIGN optArray TO search box
+    $(function () {
+        $("#search").autocomplete({
+            source:optArray
+        });
+    });
+
+    function  searchNode() {
+        // FIND THE NODE
+        var selectedVal = document.getElementById('search').value;
+
+        svg.selectAll(".nodes")
+            .filter(function (d) {return d.serverName != selectedVal;})
+            .style("opacity",highlight_trans/2)
+            .transition()
+            .duration(5000)
+            .style("opacity",1);
+        svg.selectAll(".link")
+            .style("opacity",highlight_trans/2)
+            .transition()
+            .duration(5000)
+            .style("opacity",1);
+    }
 </script>
 
 </body>

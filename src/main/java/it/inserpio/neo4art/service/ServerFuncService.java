@@ -44,4 +44,6 @@ public interface ServerFuncService {
      */
     Map<String,Object> graph(int limit);
 
+    int saveServerConnection(ServerConnection serverConnection);
+
 }

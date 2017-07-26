@@ -65,8 +65,7 @@ public class ServerFuncServiceImpl implements ServerFuncService {
     @Override
     public void saveNodesAndRelations() {
         Set<ServerFunc> serverFuncSet = prepareNeo();
-        for (ServerFunc serverFunc :
-                serverFuncSet) {
+        for (ServerFunc serverFunc : serverFuncSet) {
             serverFuncRepository.save(serverFunc);
         }
     }
@@ -90,5 +89,10 @@ public class ServerFuncServiceImpl implements ServerFuncService {
     @Override
     public Map<String, Object> graph(int limit) {
         return toD3Format.toD3FormatAgain(getAllServerFunc());
+    }
+
+    @Override
+    public int saveServerConnection(ServerConnection serverConnection) {
+        return serConMapper.saveServerConnection(serverConnection);
     }
 }
