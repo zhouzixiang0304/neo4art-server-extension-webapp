@@ -2,8 +2,16 @@
 <html>
 <head>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet"
-          href="http://neo4j-contrib.github.io/developer-resources/language-guides/assets/css/main.css">
+    <script src ="/resources/js/jquery.min.js"></script>
+    <script type ='text/javascript'src="/resources/js/jquery-ui.min.js"></script>
+    <%--<script type ='text/javascript' src="/resources/js/jquery-ui.css"></script>--%>
+    <%--<script type ='text/javascript' src="/resources/js/jquery-ui.css"></script>--%>
+    <%--<script type ='text/javascript' src="/resources/js/neo4j.css"></script>--%>
+    <link rel="stylesheet" href="/resources/js/jquery-ui.css"/>
+    <link rel="stylesheet" href="/resources/js/bootstrap.css">
+    <link rel="stylesheet" href="/resources/js/neo4j.css"/>
+    <%--<link rel="stylesheet"--%>
+          <%--href="http://neo4j-contrib.github.io/developer-resources/language-guides/assets/css/main.css">--%>
     <title>Neo4j Servers</title>
 
     <style>
@@ -16,22 +24,55 @@
     </style>
 
     <script src="/resources/js/d3.js" charset="utf-8"></script>
-    <script src ="/resources/js/jquery.min.js"></script>
-    <script type ='text/javascript'src="/resources/js/jquery-ui.min.js"></script>
-    <script type ='text/javascript' src="/resources/js/jquery-ui.css"></script>
+
 </head>
 
+
 <body>
-<div role="navigation" class="navbar  navbar-static-top">
-<div class="ui-widget">
-    <input id="search" placeholder="search by name">
-    <button type="button" onclick="searchNode()">Find</button>
-</div>
-</div>
+
+
+<!-- 侧边栏 -->
+<aside id="detailsArea">
+    <div id="collapse">
+        <<
+    </div>
+    <div id="colOpen">
+        >>
+    </div>
+    <div id="seaBox">
+        <h3>依赖查询</h3>
+        <div id="seaContainer" class="input-group input-group-sm">
+            <input type="text" id="search" class="form-control" placeholder="请输入服务名称"/>
+            <span class="input-group-btn">
+                <button class="btn btn-danger" type="button" onclick="searchNode()">查询</button>
+            </span>
+        </div>
+        <h3>依赖详情</h3>
+        <div id="detailMsg">
+            <ul id="MsgList">
+            </ul>
+        </div>
+    </div>
+</aside>
 <div id="graph">
 </div>
 
 <script>
+    //aside on
+    $("#collapse").click(function () {
+        $("#detailsArea").animate({width:'20px'});
+        $("#colOpen").css("display","block");
+        $("#seaBox").css("display","none");
+        $(this).css("display","none");
+    });
+    //aside off
+    $("#colOpen").click(function () {
+        $("#detailsArea").animate({width:'280px'});
+        $("#collapse").css("display","block");
+        $("#seaBox").css("display","block");
+        $(this).css("display","none");
+    });
+
     var optArray = []; //PLACE HOLDER FOR SEARCH NAMES
     var w = window.innerWidth;
     var h = window.innerHeight;
@@ -65,7 +106,7 @@
         .attr("stroke-width", 2)//箭头宽度
         .append("path")
         .attr("d", "M0,-5L10,0L0,5")//箭头的路径
-        .attr('fill', '#1b72b4');//箭头颜色
+        .attr('fill', '#219bed');//箭头颜色
 
     d3.json("/server/graph", function (error, graph) {
         if (error) return;
@@ -93,21 +134,21 @@
             .append("g")
             .attr("class", "layer nodes");
         var node = gNode.append("circle")
-            .style("fill", "#e7f8dc")
-            .style('stroke', '#54A23A')
+            .style("fill", "#e0150b")
+            .style('stroke', '#f9fb8c')
             .attr("r", 20)
             .call(force.drag);
 
         //节点文字
-        var text = g.selectAll(".nodetext").data(graph.nodes).enter().append("text")
-            .attr("dy", ".35em").style('fill', '#54A23A').style('font-size', '12px')
+        var text = g.selectAll(".text").data(graph.nodes).enter().append("text")
+            .attr("dy", ".35em").style('fill', '#2d609c').style('font-size', '12px')
             .style('text-shadow', '0 1px 0 #fff, 1px 0 0 #fff, 0 -1px 0 #fff, -1px 0 0 #fff')
             .text(function (d) {
                 return d.serverName;
             })
 
         //set events
-        node.on("dblclick",function(d){
+        node.on("mousedown",function(d){
             d3.event.stopPropagation(); //解决拖动SVG时不能拖动节点
             focus_node = d;
             set_focus(d);
@@ -115,6 +156,7 @@
         });
 
         //鼠标操作效果
+        //TODO
         function set_focus(d) {
             if (highlight_trans <1){
 
@@ -125,7 +167,7 @@
         zoom.on("zoom",function () {
             g.attr("transform","translate(" + d3.event.translate + ")scale(" + d3.event.scale + ")");
         });
-        svg.call(zoom).on('dblclick.zoom',null);
+        svg.call(zoom).on('dblclick.zoom',null); //取消鼠标双击放大的效果
 
 
         //适应屏幕尺寸
@@ -141,6 +183,7 @@
 
 
         // force feed algo ticks
+        //实时更新nodes、links、text的坐标变化
         force.on("tick", function (d) {
             text.attr("transform", function (d) {
                 return "translate(" + d.x + "," + d.y + ")";
